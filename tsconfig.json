@@ -1,0 +1,14 @@
+{
+  "include": [
+    "src/*.tsx",
+    "src/*.ts"
+  ],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "jsx": "preserve",
+    "declaration": true
+  }
+}
