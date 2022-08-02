@@ -4,22 +4,26 @@ import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco";
 
 export default ((props) => {
   const dispose = useRef<() => void>();
-  const cancelInit = useRef<boolean>();
+  //const cancelInit = useRef<boolean>();
   const ed = useRef<IStandaloneCodeEditor>();
 
+  useEffect(() => () => {
+    // unmount
+    //cancelInit.current = true;
+    dispose.current?.();
+  })
+
+  // actual cancer. vue does this and react does this. WHY????
+  const initHappened = useRef(false);
   const refCb = async (elem: HTMLDivElement) => {
-    if (!elem) {
-      // unmount
-      cancelInit.current = true;
-      dispose.current?.();
-      return;
-    }
+    if (!elem || initHappened.current) return;
+    initHappened.current = true;
 
     await initMonacoIfNeeded(props.noCDN);
 
     await addThemeIfNeeded(props.theme);
 
-    if (cancelInit) return;
+    //if (cancelInit.current) return;
 
     ed.current = monaco.editor.create(elem, {
       language: props.lang,
