@@ -1,9 +1,9 @@
 {
   "name": "simple-react-monaco",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Monaco as an easy to use React component",
-  "main": "dist/index.jsx",
-  "module": "dist/index.jsx",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Yellowsink",
   "repository": "github:uwu/monaco-react",

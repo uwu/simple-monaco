@@ -1,5 +1,6 @@
 import { IStandaloneCodeEditor, CompProps } from "./types";
-import { createRef, PureComponent } from "react";
+// react import is needed for typescript (????)
+import React, { createRef, PureComponent } from "react";
 import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco";
 
 // every part of this mess is necessary
