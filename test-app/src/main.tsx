@@ -8,16 +8,25 @@ function App() {
   const [theme, setTheme] = useState("Monokai");
   const [ro, setRo] = useState(false);
 
+  const [show, setShow] = useState(true);
+
   return (
     <>
-      <h1>Monaco solid test</h1>
-      <Monaco
-        value={val}
-        lang={lang}
-        valOut={setVal}
-        theme={theme}
-        readonly={ro}
+      <h1>Monaco react test</h1>
+      <input
+        type="checkbox"
+        checked={show}
+        onChange={(e) => setShow(e.target.checked)}
       />
+      {show &&
+        <Monaco
+          value={val}
+          lang={lang}
+          valOut={setVal}
+          theme={theme}
+          readonly={ro}
+        />
+      }
       <pre>
         <code>{val}</code>
       </pre>

@@ -1,80 +1,94 @@
-import { IStandaloneCodeEditor, MonacoCompType } from "./types";
-import { useEffect, useRef } from "react";
+import { IStandaloneCodeEditor, CompProps } from "./types";
+import { createRef, PureComponent } from "react";
 import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco";
 
-export default ((props) => {
-  const dispose = useRef<() => void>();
-  //const cancelInit = useRef<boolean>();
-  const ed = useRef<IStandaloneCodeEditor>();
+// every part of this mess is necessary
+// yes, even the mutex and preserving the node children
+// react is a truly painful beast :(
+// -- sink
 
-  useEffect(() => () => {
-    // unmount
-    //cancelInit.current = true;
-    dispose.current?.();
-  })
+export default class extends PureComponent<CompProps> {
+  ref = createRef<HTMLDivElement>();
+  ed: IStandaloneCodeEditor;
+  elems: Element[];
+  // 0 = uninited
+  // 1 = mutex initing
+  // 2 = inited, no need for mutex
+  initState = 0;
 
-  // actual cancer. vue does this and react does this. WHY????
-  const initHappened = useRef(false);
-  const refCb = async (elem: HTMLDivElement) => {
-    if (!elem || initHappened.current) return;
-    initHappened.current = true;
+  async initMonaco() {
+    await initMonacoIfNeeded(this.props.noCDN);
 
-    await initMonacoIfNeeded(props.noCDN);
+    await addThemeIfNeeded(this.props.theme);
 
-    await addThemeIfNeeded(props.theme);
+    this.initState = 2;
 
-    //if (cancelInit.current) return;
-
-    ed.current = monaco.editor.create(elem, {
-      language: props.lang,
-      value: props.value,
-      readOnly: props.readonly ?? false,
-      theme: props.theme,
-      ...props.otherCfg,
+    this.ed = monaco.editor.create(this.ref.current, {
+      language: this.props.lang,
+      value: this.props.value,
+      readOnly: this.props.readonly ?? false,
+      theme: this.props.theme,
+      ...this.props.otherCfg,
     });
 
-    dispose.current = () => ed.current.dispose();
-
-    ed.current.onDidChangeModelContent(() =>
-      props.valOut?.(ed.current.getValue())
+    this.ed.onDidChangeModelContent(() =>
+      this.props.valOut?.(this.ed.getValue())
     );
-  };
+  }
 
-  useEffect(
-    () => ed.current?.updateOptions({ readOnly: props.readonly }),
-    [props.readonly]
-  );
+  componentDidMount() {
+    if (this.initState !== 1)
+      // noinspection JSIgnoredPromiseFromCall
+      this.initMonaco();
+    this.initState = 1;
 
-  useEffect(() => {
-    if (props.value !== ed.current?.getValue())
-      ed.current?.setValue(props.value);
-  }, [props.value]);
+    if (this.elems && this.initState !== 2) {
+      this.ref.current.innerHTML = "";
+      this.ref.current.append(...this.elems);
+    }
+  }
 
-  useEffect(() => {
-    addThemeIfNeeded(props.theme).then(() =>
-      ed.current?.updateOptions({ theme: props.theme })
+  componentWillUnmount() {
+    if (this.initState !== 2)
+      this.elems = Array.from(this.ref.current.children);
+    else this.ed?.dispose();
+  }
+
+  componentDidUpdate(prevProps: Readonly<CompProps>) {
+    if (this.initState !== 2) return;
+
+    if (this.props.readonly !== prevProps.readonly)
+      this.ed.updateOptions({ readOnly: this.props.readonly });
+
+    if (this.props.value !== this.ed.getValue())
+      this.ed.setValue(this.props.value);
+
+    if (this.props.theme !== prevProps.theme)
+      addThemeIfNeeded(this.props.theme).then(() =>
+        this.ed.updateOptions({ theme: this.props.theme })
+      );
+
+    if (this.props.lang !== prevProps.lang) {
+      const model = this.ed.getModel();
+      if (model) {
+        monaco.editor.setModelLanguage(model, this.props.lang);
+        this.ed.setModel(model);
+      }
+    }
+
+    if (this.props.otherCfg !== prevProps.otherCfg && this.props.otherCfg)
+      this.ed.updateOptions(this.props.otherCfg);
+  }
+
+  render() {
+    return (
+      <div
+        ref={this.ref}
+        style={{
+          width: this.props.width ?? "30rem",
+          height: this.props.height ?? "10rem",
+        }}
+      />
     );
-  }, [props.theme]);
-
-  useEffect(() => {
-    const model = ed.current?.getModel();
-    if (!model) return;
-    monaco.editor.setModelLanguage(model, props.lang);
-    ed.current.setModel(model);
-  }, [props.lang]);
-
-  useEffect(
-    () => props.otherCfg && ed.current?.updateOptions(props.otherCfg),
-    [props.otherCfg]
-  );
-
-  return (
-    <div
-      ref={refCb}
-      style={{
-        width: props.width ?? "30rem",
-        height: props.height ?? "10rem",
-      }}
-    />
-  );
-}) as MonacoCompType;
+  }
+}
