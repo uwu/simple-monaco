@@ -1,9 +1,8 @@
 <script setup lang="ts">
-
-import type {CfgOpts} from "./types";
-import {addThemeIfNeeded, initMonacoIfNeeded, monaco} from "./monaco";
-import {onUnmounted, watchEffect} from "vue";
-import type {Monaco} from "@monaco-editor/loader";
+import type { CfgOpts } from "./types";
+import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco";
+import { onUnmounted, watchEffect } from "vue";
+import type { Monaco } from "@monaco-editor/loader";
 
 const props = defineProps<{
   lang: string;
@@ -16,7 +15,7 @@ const props = defineProps<{
   noCDN?: Monaco;
 }>();
 const emit = defineEmits<{
-  (event: "update:modelValue", value: string): void
+  (event: "update:modelValue", value: string): void;
 }>();
 
 let dispose: () => void;
@@ -39,18 +38,20 @@ const refCb = async (elem: HTMLDivElement) => {
     value: props.modelValue,
     readOnly: props.readonly ?? false,
     theme: props.theme,
-    ...props.otherCfg
+    ...props.otherCfg,
   });
 
   dispose = () => ed.dispose();
 
   ed.onDidChangeModelContent(() => emit("update:modelValue", ed.getValue()));
-  watchEffect(() => ed.updateOptions({readOnly: props.readonly}));
-  watchEffect(() => props.modelValue !== ed.getValue() && ed.setValue(props.modelValue));
+  watchEffect(() => ed.updateOptions({ readOnly: props.readonly }));
+  watchEffect(
+    () => props.modelValue !== ed.getValue() && ed.setValue(props.modelValue)
+  );
 
   watchEffect(async () => {
     await addThemeIfNeeded(props.theme);
-    ed.updateOptions({theme: props.theme});
+    ed.updateOptions({ theme: props.theme });
   });
 
   watchEffect(() => {
@@ -62,9 +63,11 @@ const refCb = async (elem: HTMLDivElement) => {
 };
 
 onUnmounted(() => dispose?.());
-
 </script>
 
 <template>
-  <div :ref="refCb" :style="{width: props.width ?? '30rem', height: props.height ?? '10rem'}"/>
+  <div
+    :ref="refCb"
+    :style="{ width: props.width ?? '30rem', height: props.height ?? '10rem' }"
+  />
 </template>

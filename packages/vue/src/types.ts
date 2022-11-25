@@ -4,4 +4,3 @@ export type CfgOpts = Omit<
   editor.IStandaloneEditorConstructionOptions,
   "language" | "value" | "readOnly" | "theme"
 >;
-

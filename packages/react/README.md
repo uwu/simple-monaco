@@ -3,9 +3,9 @@
 Please read the main readme [here](https://github.com/uwu/simple-monaco).
 
 ```tsx
-import {useState} from "react";
+import { useState } from "react";
 import Monaco from "@uwu/monaco-react";
-import * as monaco from "monaco-editor"
+import * as monaco from "monaco-editor";
 
 export default () => {
   const [val, setVal] = useState("");
@@ -24,8 +24,10 @@ export default () => {
         otherCfg={{}}
         noCDN={monaco}
       />
-      <pre><code>{val}</code></pre>
+      <pre>
+        <code>{val}</code>
+      </pre>
     </>
   );
-}
+};
 ```

@@ -3,7 +3,7 @@
 Please read the main readme [here](https://github.com/uwu/simple-monaco).
 
 ```tsx
-import {createSignal} from "solid-js";
+import { createSignal } from "solid-js";
 import Monaco from "@uwu/monaco-solid";
 
 export default () => {
@@ -21,8 +21,10 @@ export default () => {
         width="20rem"
         otherCfg={{}}
       />
-      <pre><code>{val()}</code></pre>
+      <pre>
+        <code>{val()}</code>
+      </pre>
     </>
   );
-}
+};
 ```

@@ -18,7 +18,7 @@ function App() {
         checked={show}
         onChange={(e) => setShow(e.target.checked)}
       />
-      {show &&
+      {show && (
         <Monaco
           value={val}
           lang={lang}
@@ -26,7 +26,7 @@ function App() {
           theme={theme}
           readonly={ro}
         />
-      }
+      )}
       <pre>
         <code>{val}</code>
       </pre>
