@@ -1,6 +1,6 @@
 {
   "name": "@uwu/monaco-svelte",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Monaco as an easy to use Svelte component",
   "main": "src/index.svelte",
   "module": "src/index.svelte",
