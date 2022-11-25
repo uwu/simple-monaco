@@ -7,7 +7,7 @@ export default ((props) => {
   let cancelInit = false;
 
   const refCb = async (elem: HTMLDivElement) => {
-    await initMonacoIfNeeded();
+    await initMonacoIfNeeded(props.noCDN);
 
     await addThemeIfNeeded(props.theme);
 

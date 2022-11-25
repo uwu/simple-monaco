@@ -3,6 +3,7 @@
 	import {Readable, Writable} from "svelte/store";
 	import type {CfgOpts, IStandaloneCodeEditor} from "./types";
 	import {addThemeIfNeeded, initMonacoIfNeeded, monaco} from "./monaco";
+	import type {Monaco} from "@monaco-editor/loader";
 
 	export let
 		lang: string,
@@ -11,7 +12,8 @@
 		theme: string = undefined,
 		otherCfg: CfgOpts = {},
 		height: string = "10rem",
-		width: string = "30rem";
+		width: string = "30rem",
+    noCDN: Monaco = undefined;
 
 	let ed: IStandaloneCodeEditor;
 
@@ -20,7 +22,7 @@
 	let elem: HTMLDivElement;
 	let cancelInit = false;
 	onMount(async () => {
-		await initMonacoIfNeeded();
+		await initMonacoIfNeeded(noCDN);
 		await addThemeIfNeeded(theme);
 
 		if (cancelInit) return;

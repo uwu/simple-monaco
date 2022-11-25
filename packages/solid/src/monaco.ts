@@ -6,9 +6,8 @@ let monacoLoaded: Promise<void>;
 
 const loadedThemes = new Set<string>();
 
-export const addThemeIfNeeded = async (t: string) => {
-	if (!t || !t.trim()) return;
-	if (loadedThemes.has(t)) return;
+export async function addThemeIfNeeded(t: string) {
+	if (!t || !t.trim() || loadedThemes.has(t)) return;
 
 	loadedThemes.add(t);
 
@@ -17,10 +16,12 @@ export const addThemeIfNeeded = async (t: string) => {
 	const theme = await fetch(u).then((r) => r.json());
 
 	monaco.editor.defineTheme(t, theme);
-};
+}
 
-export const initMonacoIfNeeded = async () => {
+export async function initMonacoIfNeeded(useNpmMonaco?: Monaco) {
 	if (monaco) return;
+
+	if (useNpmMonaco) loader.config({ monaco: useNpmMonaco });
 
 	if (!monacoLoaded)
 		monacoLoaded = loader.init().then((m) => {
@@ -28,4 +29,4 @@ export const initMonacoIfNeeded = async () => {
 		});
 
 	await monacoLoaded;
-};
+}

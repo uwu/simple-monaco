@@ -3,6 +3,7 @@
 import type {CfgOpts} from "./types";
 import {addThemeIfNeeded, initMonacoIfNeeded, monaco} from "./monaco";
 import {onUnmounted, watchEffect} from "vue";
+import type {Monaco} from "@monaco-editor/loader";
 
 const props = defineProps<{
   lang: string;
@@ -12,6 +13,7 @@ const props = defineProps<{
   otherCfg?: CfgOpts;
   height?: string;
   width?: string;
+  noCDN?: Monaco;
 }>();
 const emit = defineEmits<{
   (event: "update:modelValue", value: string): void
@@ -28,7 +30,7 @@ const refCb = async (elem: HTMLDivElement) => {
   if (!firstRun) return;
   firstRun = false;
 
-  await initMonacoIfNeeded();
+  await initMonacoIfNeeded(props.noCDN);
   await addThemeIfNeeded(props.theme);
   if (cancelInit) return;
 

@@ -1,4 +1,5 @@
 import {editor} from "monaco-editor";
+import {Monaco} from "@monaco-editor/loader"
 import {Component, Setter} from "solid-js";
 
 type CfgOpts = Omit<
@@ -15,4 +16,5 @@ export type MonacoCompType = Component<{
 	otherCfg?: CfgOpts;
 	height?: string;
 	width?: string;
+	noCDN?: Monaco;
 }>;
