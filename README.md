@@ -1,6 +1,7 @@
 # uwu simple-monaco components
 
-These are components that wrap Microsoft's great Monaco editor for the primary web UI frameworks, with a unified API.
+These are components that wrap Microsoft's great Monaco editor (from vscode!)
+for the primary web UI frameworks, with a unified API.
 
 Scroll down for generic docs, all props are reactive, comes with typescript defs/source when applicable.
 

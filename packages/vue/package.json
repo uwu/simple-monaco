@@ -1,6 +1,6 @@
 {
   "name": "@uwu/monaco-vue",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Monaco as an easy to use vue component",
   "main": "src/index.vue",
   "module": "src/index.vue",
