@@ -50,6 +50,12 @@
 		}
 	}
 
+  let first = true;
+  $: if (first)
+      first = false;
+    else
+      ed?.updateOptions(otherCfg);
+
 	onDestroy(() => {
 		cancelInit = true;
 		ed.dispose();

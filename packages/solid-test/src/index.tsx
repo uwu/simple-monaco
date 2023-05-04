@@ -1,13 +1,15 @@
 /* @refresh reload */
 import { createSignal } from "solid-js";
 import { render } from "solid-js/web";
-import Monaco from "../../src";
+import Monaco from "@uwu/monaco-solid";
 
 render(() => {
   const [val, setVal] = createSignal("");
   const [lang, setLang] = createSignal("javascript");
   const [theme, setTheme] = createSignal("Monokai");
   const [ro, setRo] = createSignal(false);
+
+  const [fontSize, setFontSize] = createSignal(16);
 
   return (
     <>
@@ -18,6 +20,7 @@ render(() => {
         valOut={setVal}
         theme={theme()}
         readonly={ro()}
+        otherCfg={{ fontSize: fontSize() }}
       />
       <pre>
         <code>{val()}</code>
@@ -37,6 +40,12 @@ render(() => {
         onchange={(e) => setRo((e.target as HTMLInputElement).checked)}
       />
       <label for="ro">readonly</label>
+      <input
+        type="text"
+        onchange={(e) =>
+          setFontSize(parseFloat((e.target as HTMLInputElement).value))
+        }
+      />
     </>
   );
 }, document.querySelector("body") as HTMLElement);

@@ -1,4 +1,4 @@
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect, on, onCleanup } from "solid-js";
 import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco";
 import type { MonacoCompType } from "./types";
 
@@ -49,6 +49,14 @@ export default ((props) => {
       monaco.editor.setModelLanguage(model, props.lang);
       ed.setModel(model);
     });
+
+    createEffect(
+      on(
+        () => props.otherCfg,
+        (o) => ed.updateOptions(o),
+        { defer: true }
+      )
+    );
   };
 
   onCleanup(() => {
