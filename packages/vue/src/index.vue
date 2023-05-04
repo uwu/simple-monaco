@@ -60,6 +60,8 @@ const refCb = async (elem: HTMLDivElement) => {
     monaco.editor.setModelLanguage(model, props.lang);
     ed.setModel(model);
   });
+
+  watchEffect(() => props.otherCfg && ed.updateOptions(props.otherCfg));
 };
 
 onUnmounted(() => dispose?.());

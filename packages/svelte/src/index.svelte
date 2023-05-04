@@ -51,7 +51,7 @@
 	}
 
   let first = true;
-  $: if (first)
+  $: if (first && otherCfg)
       first = false;
     else
       ed?.updateOptions(otherCfg);

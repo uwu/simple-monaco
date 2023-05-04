@@ -6,7 +6,7 @@ let monacoLoaded: Promise<void>;
 
 const loadedThemes = new Set<string>();
 
-export async function addThemeIfNeeded(t: string) {
+export async function addThemeIfNeeded(t: string | undefined) {
   if (!t || !t.trim() || loadedThemes.has(t)) return;
 
   loadedThemes.add(t);

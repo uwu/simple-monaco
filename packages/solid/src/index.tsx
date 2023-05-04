@@ -50,7 +50,7 @@ export default ((props) => {
       ed.setModel(model);
     });
 
-    createEffect(() => ed.updateOptions(props.otherCfg));
+    createEffect(() => props.otherCfg && ed.updateOptions(props.otherCfg));
   };
 
   onCleanup(() => {
