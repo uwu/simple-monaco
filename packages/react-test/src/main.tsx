@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-import Monaco from "../../src";
+import Monaco from "../../react/src";
 
 function App() {
   const [val, setVal] = useState("");
@@ -9,6 +9,8 @@ function App() {
   const [ro, setRo] = useState(false);
 
   const [show, setShow] = useState(true);
+
+  const [fontSize, setFontSize] = useState(16);
 
   return (
     <>
@@ -25,6 +27,7 @@ function App() {
           valOut={setVal}
           theme={theme}
           readonly={ro}
+          otherCfg={{fontSize}}
         />
       )}
       <pre>
@@ -39,6 +42,7 @@ function App() {
         onChange={(e) => setRo(e.target.checked)}
       />
       <label htmlFor="ro">readonly</label>
+      <input type="text" onChange={(e) => setFontSize(parseFloat(e.target.value))} />
     </>
   );
 }
