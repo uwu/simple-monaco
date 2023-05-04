@@ -1,7 +1,7 @@
 /* @refresh reload */
 import { createSignal } from "solid-js";
 import { render } from "solid-js/web";
-import Monaco from "@uwu/monaco-solid";
+import Monaco from "@uwu/monaco-solid/src";
 
 render(() => {
   const [val, setVal] = createSignal("");
