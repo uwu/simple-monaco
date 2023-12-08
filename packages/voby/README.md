@@ -2,31 +2,26 @@
 
 Please read the main readme [here](https://github.com/uwu/simple-monaco).
 
-<!-- TODO: change -->
-
 ```tsx
-import { createSignal } from "solid-js";
-import Monaco from "@uwu/monaco-solid";
+import { html, $ } from "voby";
+import Monaco from "@uwu/monaco-voby";
 
 export default () => {
-	const [val, setVal] = createSignal("");
+	const val = $("");
 
-	return (
-		<>
-			<Monaco
-				value={val()} // required
-				valOut={setVal}
-				lang="javascript" // required
-				theme="Monokai"
-				readonly={false}
-				height="30rem"
-				width="20rem"
-				otherCfg={{}}
-			/>
-			<pre>
-				<code>{val()}</code>
-			</pre>
-		</>
-	);
+	return html`
+		<${Monaco}
+			value=${val} // required
+			lang="javascript" // required
+			theme="Monokai"
+			readonly=${false}
+			height="30rem"
+			width="20rem"
+			otherCfg=${{}}
+		/>
+		<pre>
+			<code>${val}</code>
+		</pre>
+	`
 };
 ```
