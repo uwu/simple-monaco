@@ -6,12 +6,13 @@ for the primary web UI frameworks, with a unified API.
 Scroll down for generic docs, all props are reactive, comes with typescript defs/source when applicable.
 
 ## Packages
-| pkg    | src                                                                                 | npm                                                |
-|--------|-------------------------------------------------------------------------------------|----------------------------------------------------|
-| react  | [packages/react](https://github.com/uwu/simple-monaco/tree/master/packages/react)   | [@uwu/monaco-react](https://npm.im/monaco-react)   |
-| vue    | [packages/vue](https://github.com/uwu/simple-monaco/tree/master/packages/vue)       | [@uwu/monaco-vue](https://npm.im/monaco-vue)       |
-| svelte | [packages/svelte](https://github.com/uwu/simple-monaco/tree/master/packages/svelte) | [@uwu/monaco-svelte](https://npm.im/monaco-svelte) |
-| solid  | [packages/solid](https://github.com/uwu/simple-monaco/tree/master/packages/solid)   | [@uwu/monaco-solid](https://npm.im/monaco-solid)   |
+| pkg    | src                                                                                 | npm                                                     |
+|--------|-------------------------------------------------------------------------------------|---------------------------------------------------------|
+| react  | [packages/react](https://github.com/uwu/simple-monaco/tree/master/packages/react)   | [@uwu/monaco-react](https://npm.im/@uwu/monaco-react)   |
+| vue    | [packages/vue](https://github.com/uwu/simple-monaco/tree/master/packages/vue)       | [@uwu/monaco-vue](https://npm.im/@uwu/monaco-vue)       |
+| svelte | [packages/svelte](https://github.com/uwu/simple-monaco/tree/master/packages/svelte) | [@uwu/monaco-svelte](https://npm.im/@uwu/monaco-svelte) |
+| solid  | [packages/solid](https://github.com/uwu/simple-monaco/tree/master/packages/solid)   | [@uwu/monaco-solid](https://npm.im/@uwu/monaco-solid)   |
+| voby   | [packages/solid](https://github.com/uwu/simple-monaco/tree/master/packages/voby)    | [@uwu/monaco-solid](https://npm.im/@uwu/monaco-voby)    |
 
 ## Important notes
 
@@ -29,22 +30,24 @@ A UI component for the relevant framework is default exported. It does not take 
 ### value (REQUIRED)
 The current text value of the editor.
 
-| framework | type               | notes                  |
-|-----------|--------------------|------------------------|
-| react     | `string`           |                        |
-| vue       | N/A                | use `v-model`          |
-| svelte    | `Writable<string>` | must be a svelte store |
-| solid     | `string`           |                        |
+| framework | type                 | notes                  |
+|-----------|----------------------|------------------------|
+| react     | `string`             |                        |
+| vue       | N/A                  | use `v-model`          |
+| svelte    | `Writable<string>`   | must be a svelte store |
+| solid     | `string`             |                        |
+| voby      | `Observable<string>` |                        |
 
 ### valOut
 The setter of the state/signal.
 
-| framework | type               | notes               |
-|-----------|--------------------|---------------------|
-| react     | `(string) => void` |                     |
-| vue       | N/A                | use `v-model`       |
-| svelte    | N/A                | use the value store |
-| solid     | `Setter<string>`   |                     |
+| framework | type               | notes                    |
+|-----------|--------------------|--------------------------|
+| react     | `(string) => void` |                          |
+| vue       | N/A                | use `v-model`            |
+| svelte    | N/A                | use the value store      |
+| solid     | `Setter<string>`   |                          |
+| voby      | N/A                | Observable<> is writable |
 
 ### lang (REQUIRED)
 The programming language to use. Influences highlighting, completion, etc.
