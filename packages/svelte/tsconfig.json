@@ -1,9 +1,9 @@
 {
-  "include": ["src/*.tsx", "src/*.ts"],
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "noEmit": true
-  }
+	"include": ["src/*.tsx", "src/*.ts"],
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"noEmit": true
+	}
 }

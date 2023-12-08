@@ -1,11 +1,11 @@
 {
-  "include": ["src/*.tsx", "src/*.ts"],
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "jsx": "preserve",
-    "outDir": "dist",
-    "declaration": true
-  }
+	"include": ["src/*.tsx", "src/*.ts"],
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"jsx": "preserve",
+		"outDir": "dist",
+		"declaration": true
+	}
 }

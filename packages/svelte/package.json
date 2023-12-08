@@ -1,24 +1,24 @@
 {
-  "name": "@uwu/monaco-svelte",
-  "version": "1.2.0",
-  "description": "Monaco as an easy to use Svelte component",
-  "main": "src/index.svelte",
-  "module": "src/index.svelte",
-  "author": "Yellowsink",
-  "license": "BSD-3-Clause",
-  "repository": "github:uwu/simple-monaco",
-  "scripts": {
-    "prepublish": "tsc"
-  },
-  "dependencies": {
-    "@monaco-editor/loader": "^1.3.2",
-    "monaco-editor": "^0.33.0"
-  },
-  "devDependencies": {
-    "svelte": "^3.48.0",
-    "typescript": "^4.7.4"
-  },
-  "peerDependencies": {
-    "svelte": "^3.48.0"
-  }
+	"name": "@uwu/monaco-svelte",
+	"version": "1.2.0",
+	"description": "Monaco as an easy to use Svelte component",
+	"main": "src/index.svelte",
+	"module": "src/index.svelte",
+	"author": "Yellowsink",
+	"license": "BSD-3-Clause",
+	"repository": "github:uwu/simple-monaco",
+	"scripts": {
+		"prepublish": "tsc"
+	},
+	"dependencies": {
+		"@monaco-editor/loader": "^1.3.2",
+		"monaco-editor": "^0.33.0"
+	},
+	"devDependencies": {
+		"svelte": "^3.48.0",
+		"typescript": "^4.7.4"
+	},
+	"peerDependencies": {
+		"svelte": "^3.48.0"
+	}
 }

@@ -11,15 +11,15 @@ let value = ref("");
 </script>
 
 <template>
-  <!--value and lang are required-->
-  <Monaco
-    v-model="value"
-    lang="javascript"
-    theme="Monokai"
-    :readonly="false"
-    height="30rem"
-    width="20rem"
-    :otherCfg="{}"
-  />
+	<!--value and lang are required-->
+	<Monaco
+		v-model="value"
+		lang="javascript"
+		theme="Monokai"
+		:readonly="false"
+		height="30rem"
+		width="20rem"
+		:otherCfg="{}"
+	/>
 </template>
 ```

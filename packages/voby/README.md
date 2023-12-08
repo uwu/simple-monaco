@@ -9,24 +9,24 @@ import { createSignal } from "solid-js";
 import Monaco from "@uwu/monaco-solid";
 
 export default () => {
-  const [val, setVal] = createSignal("");
+	const [val, setVal] = createSignal("");
 
-  return (
-    <>
-      <Monaco
-        value={val()} // required
-        valOut={setVal}
-        lang="javascript" // required
-        theme="Monokai"
-        readonly={false}
-        height="30rem"
-        width="20rem"
-        otherCfg={{}}
-      />
-      <pre>
-        <code>{val()}</code>
-      </pre>
-    </>
-  );
+	return (
+		<>
+			<Monaco
+				value={val()} // required
+				valOut={setVal}
+				lang="javascript" // required
+				theme="Monokai"
+				readonly={false}
+				height="30rem"
+				width="20rem"
+				otherCfg={{}}
+			/>
+			<pre>
+				<code>{val()}</code>
+			</pre>
+		</>
+	);
 };
 ```

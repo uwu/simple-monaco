@@ -1,12 +1,12 @@
 {
-  "include": ["src/*.tsx", "src/*.ts"],
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "outDir": "dist",
-    "jsx": "react",
-    "declaration": true
-  }
+	"include": ["src/*.tsx", "src/*.ts"],
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"outDir": "dist",
+		"jsx": "react",
+		"declaration": true
+	}
 }

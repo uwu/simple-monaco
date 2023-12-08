@@ -1,6 +1,6 @@
 import { editor } from "monaco-editor";
 
 export type CfgOpts = Omit<
-  editor.IStandaloneEditorConstructionOptions,
-  "language" | "value" | "readOnly" | "theme"
+	editor.IStandaloneEditorConstructionOptions,
+	"language" | "value" | "readOnly" | "theme"
 >;
