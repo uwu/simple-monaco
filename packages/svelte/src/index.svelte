@@ -2,18 +2,20 @@
 	import {onDestroy, onMount} from "svelte";
 	import {Readable, Writable} from "svelte/store";
 	import type {CfgOpts, IStandaloneCodeEditor} from "./types";
-	import {addThemeIfNeeded, initMonacoIfNeeded, monaco} from "./monaco";
-	import type {Monaco} from "@monaco-editor/loader";
+	import {addThemeIfNeeded, initMonacoIfNeeded, monaco} from "@uwu/simple-monaco-core";
+	import type {MonacoType, ThemeAddProp} from "@uwu/simple-monaco-core";
 
 	export let
 		lang: string,
 		value: Readable<string> | Writable<string>,
 		readonly: boolean = false,
-		theme: string = undefined,
+		theme: ThemeAddProp = undefined,
 		otherCfg: CfgOpts = {},
 		height: string = "10rem",
 		width: string = "30rem",
-    noCDN: Monaco = undefined;
+    noCDN: MonacoType = undefined;
+
+	$: themeName = Array.isArray(theme) ? theme[0] : theme;
 
 	let ed: IStandaloneCodeEditor;
 
@@ -31,7 +33,7 @@
 			language: lang,
 			value: $value,
 			readOnly: readonly,
-			theme,
+			theme: themeName,
 			...otherCfg
 		});
 
@@ -40,7 +42,7 @@
 
 	$: if ($value !== ed?.getValue()) ed?.setValue($value);
 	$: ed?.updateOptions({readOnly: readonly});
-	$: addThemeIfNeeded(theme).then(() => ed?.updateOptions({theme}));
+	$: addThemeIfNeeded(theme).then(() => ed?.updateOptions({theme: themeName}));
 
 	$: {
 		const model = ed?.getModel();

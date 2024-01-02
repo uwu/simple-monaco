@@ -1,8 +1,13 @@
-import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco.js";
+import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "@uwu/simple-monaco-core";
 import type { MonacoCompType } from "./types.js";
 import { $, h, html, useCleanup, useEffect } from "voby";
 
 export default ((props) => {
+	const themeName = () => {
+		const t = props.theme?.();
+		return t && (Array.isArray(t) ? t[0] : t);
+	}
+
 	const div = (
 		html`<div
 			style=${() => ({ width: props.width ?? "30rem", height: props.height ?? "10rem" })}
@@ -26,7 +31,7 @@ export default ((props) => {
 			language: props.lang?.(),
 			value: props.value?.() ?? "",
 			readOnly: props.readonly?.() ?? false,
-			theme: props.theme?.(),
+			theme: themeName(),
 			...props.otherCfg?.(),
 		});
 
@@ -45,7 +50,7 @@ export default ((props) => {
 		});
 
 		useEffect(() => {
-			addThemeIfNeeded(props.theme?.()).then(() => ed.updateOptions({ theme: props.theme?.() }));
+			addThemeIfNeeded(props.theme?.()).then(() => ed.updateOptions({ theme: themeName() }));
 		});
 
 		useEffect(() => {

@@ -1,7 +1,7 @@
 import { IStandaloneCodeEditor, CompProps } from "./types";
 // react import is needed for typescript (????)
 import React, { createRef, PureComponent } from "react";
-import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco";
+import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "@uwu/simple-monaco-core";
 
 // every part of this mess is necessary
 // yes, even the mutex and preserving the node children
@@ -17,6 +17,10 @@ export default class extends PureComponent<CompProps> {
 	// 2 = inited, no need for mutex
 	initState = 0;
 
+	get themeName() {
+		return Array.isArray(this.props.theme) ? this.props.theme[0] : this.props.theme;
+	}
+
 	async initMonaco() {
 		await initMonacoIfNeeded(this.props.noCDN);
 
@@ -28,7 +32,7 @@ export default class extends PureComponent<CompProps> {
 			language: this.props.lang,
 			value: this.props.value,
 			readOnly: this.props.readonly ?? false,
-			theme: this.props.theme,
+			theme: this.themeName,
 			...this.props.otherCfg,
 		});
 
@@ -62,7 +66,7 @@ export default class extends PureComponent<CompProps> {
 
 		if (this.props.theme !== prevProps.theme)
 			addThemeIfNeeded(this.props.theme).then(() =>
-				this.ed.updateOptions({ theme: this.props.theme }),
+				this.ed.updateOptions({ theme: this.themeName }),
 			);
 
 		if (this.props.lang !== prevProps.lang) {

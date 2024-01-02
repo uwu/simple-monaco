@@ -1,0 +1,22 @@
+{
+	"name": "@uwu/simple-monaco-core",
+	"version": "1.0.0",
+	"description": "Monaco easy components core (loader and themer)",
+	"main": "index.js",
+	"module": "index.js",
+	"types": "index.d.ts",
+	"author": "Yellowsink",
+	"license": "BSD-3-Clause",
+	"repository": "github:uwu/simple-monaco",
+	"scripts": {
+		"prepublishOnly": "tsc"
+	},
+	"devDependencies": {
+		"typescript": "^5.3.3"
+	},
+	"dependencies": {
+		"@monaco-editor/loader": "^1.4.0",
+		"monaco-editor": "^0.45.0",
+		"monaco-themes": "^0.4.4"
+	}
+}

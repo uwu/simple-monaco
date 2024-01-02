@@ -1,10 +1,12 @@
-import { createEffect, on, onCleanup } from "solid-js";
-import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco";
+import { createEffect, onCleanup } from "solid-js";
+import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "@uwu/simple-monaco-core";
 import type { MonacoCompType } from "./types";
 
 export default ((props) => {
 	let dispose: () => void;
 	let cancelInit = false;
+
+	const themeName = () => Array.isArray(props.theme) ? props.theme[0] : props.theme;
 
 	const refCb = async (elem: HTMLDivElement) => {
 		await initMonacoIfNeeded(props.noCDN);
@@ -17,19 +19,14 @@ export default ((props) => {
 			language: props.lang,
 			value: props.value,
 			readOnly: props.readonly ?? false,
-			theme: props.theme,
+			theme: themeName(),
 			...props.otherCfg,
 		});
 
 		dispose = () => ed.dispose();
 
-		// stops syntax highlighting flickering
-		//let valueAntiflicker = false;
-
 		ed.onDidChangeModelContent(() => {
-			//valueAntiflicker = true;
 			props.valOut?.(ed.getValue());
-			//valueAntiflicker = false;
 		});
 
 		createEffect(() => ed.updateOptions({ readOnly: props.readonly }));
@@ -40,7 +37,7 @@ export default ((props) => {
 
 		createEffect(async () => {
 			await addThemeIfNeeded(props.theme);
-			ed.updateOptions({ theme: props.theme });
+			ed.updateOptions({ theme: themeName() });
 		});
 
 		createEffect(() => {

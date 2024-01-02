@@ -1,8 +1,8 @@
-import { editor } from "monaco-editor";
-import type { Monaco } from "@monaco-editor/loader";
+import { mEditor, ThemeAddProp } from "@uwu/simple-monaco-core";
+import {MonacoType } from "@uwu/simple-monaco-core";
 
 type CfgOpts = Omit<
-	editor.IStandaloneEditorConstructionOptions,
+	mEditor.IStandaloneEditorConstructionOptions,
 	"language" | "value" | "readOnly" | "theme"
 >;
 
@@ -11,11 +11,11 @@ export type CompProps = {
 	value: string;
 	valOut?: (v: string) => void;
 	readonly?: boolean;
-	theme?: string;
+	theme?: ThemeAddProp;
 	otherCfg?: CfgOpts;
 	height?: string;
 	width?: string;
-	noCDN?: Monaco;
+	noCDN?: MonacoType;
 };
 
-export type IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+export type IStandaloneCodeEditor = mEditor.IStandaloneCodeEditor;

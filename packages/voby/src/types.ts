@@ -1,9 +1,8 @@
-import { editor } from "monaco-editor";
-import { Monaco } from "@monaco-editor/loader";
+import { mEditor, MonacoType, ThemeAddProp } from "@uwu/simple-monaco-core";
 import { html, ObservableLike, ObservableReadonlyLike } from "voby";
 
 type CfgOpts = Omit<
-	editor.IStandaloneEditorConstructionOptions,
+	mEditor.IStandaloneEditorConstructionOptions,
 	"language" | "value" | "readOnly" | "theme"
 >;
 
@@ -11,9 +10,9 @@ export type MonacoCompType = (p: {
 	lang: ObservableReadonlyLike<string>;
 	value: ObservableLike<string>;
 	readonly?: ObservableReadonlyLike<boolean>;
-	theme?: ObservableReadonlyLike<string>;
+	theme?: ObservableReadonlyLike<ThemeAddProp>;
 	otherCfg?: ObservableReadonlyLike<CfgOpts>;
 	height?: ObservableReadonlyLike<string>;
 	width?: ObservableReadonlyLike<string>;
-	noCDN?: Monaco;
+	noCDN?: MonacoType;
 }) => ReturnType<typeof html>;

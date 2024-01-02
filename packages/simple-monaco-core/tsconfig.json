@@ -1,0 +1,11 @@
+{
+	"include": ["index.ts"],
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"declaration": true,
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true
+	}
+}

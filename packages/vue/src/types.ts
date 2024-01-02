@@ -1,6 +1,6 @@
-import { editor } from "monaco-editor";
+import { mEditor } from "@uwu/simple-monaco-core";
 
 export type CfgOpts = Omit<
-	editor.IStandaloneEditorConstructionOptions,
+	mEditor.IStandaloneEditorConstructionOptions,
 	"language" | "value" | "readOnly" | "theme"
 >;

@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import type { CfgOpts } from "./types";
-import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "./monaco";
+import {
+	addThemeIfNeeded,
+	initMonacoIfNeeded,
+	monaco, MonacoType,
+	ThemeAddProp
+} from "@uwu/simple-monaco-core";
 import { onUnmounted, watchEffect } from "vue";
-import type { Monaco } from "@monaco-editor/loader";
 
 const props = defineProps<{
 	lang: string;
 	modelValue: string;
 	readonly?: boolean;
-	theme?: string;
+	theme?: ThemeAddProp;
 	otherCfg?: CfgOpts;
 	height?: string;
 	width?: string;
-	noCDN?: Monaco;
+	noCDN?: MonacoType;
 }>();
 const emit = defineEmits<{
 	(event: "update:modelValue", value: string): void;
@@ -22,6 +26,8 @@ let dispose: () => void;
 let cancelInit = false;
 
 let firstRun = true;
+
+const themeName = () => Array.isArray(props.theme) ? props.theme[0] : props.theme;
 
 const refCb = async (elem: HTMLDivElement) => {
 	// vue what in the name of the good lord is wrong with you
@@ -37,7 +43,7 @@ const refCb = async (elem: HTMLDivElement) => {
 		language: props.lang,
 		value: props.modelValue,
 		readOnly: props.readonly ?? false,
-		theme: props.theme,
+		theme: themeName(),
 		...props.otherCfg,
 	});
 
@@ -49,7 +55,7 @@ const refCb = async (elem: HTMLDivElement) => {
 
 	watchEffect(async () => {
 		await addThemeIfNeeded(props.theme);
-		ed.updateOptions({ theme: props.theme });
+		ed.updateOptions({ theme: themeName() });
 	});
 
 	watchEffect(() => {

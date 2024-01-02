@@ -1,9 +1,8 @@
-import { editor } from "monaco-editor";
-import { Monaco } from "@monaco-editor/loader";
+import {MonacoType, mEditor, ThemeAddProp} from "@uwu/simple-monaco-core"
 import { Component, Setter } from "solid-js";
 
 type CfgOpts = Omit<
-	editor.IStandaloneEditorConstructionOptions,
+	mEditor.IStandaloneEditorConstructionOptions,
 	"language" | "value" | "readOnly" | "theme"
 >;
 
@@ -12,9 +11,9 @@ export type MonacoCompType = Component<{
 	value: string;
 	valOut?: Setter<string>;
 	readonly?: boolean;
-	theme?: string;
+	theme?: ThemeAddProp;
 	otherCfg?: CfgOpts;
 	height?: string;
 	width?: string;
-	noCDN?: Monaco;
+	noCDN?: MonacoType;
 }>;
