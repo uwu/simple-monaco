@@ -29,7 +29,9 @@ export async function addThemeIfNeeded(t: ThemeAddProp) {
 		catch {
 			if (namedList[name])
 				url = `https://cdn.esm.sh/monaco-themes@0.4.4/themes/${namedList[name]}.json`;
-			else throw new Error(`${name} is not a theme in the monaco-themes package so cannot be used by name.`)
+			else
+				//throw new Error(`${name} is not a theme in the monaco-themes package so cannot be used by name.`)
+				return; // a throw is too drastic
 		}
 
 		theme = await fetch(url).then((r) => r.json());
@@ -39,7 +41,7 @@ export async function addThemeIfNeeded(t: ThemeAddProp) {
 }
 
 type PostLoadCb = (m: Monaco) => void | Promise<void>;
-let postLoadCallbacks: (PostLoadCb)[];
+const postLoadCallbacks: (PostLoadCb)[] = [];
 export function registerPostloadCallback(cb: PostLoadCb) {
 	postLoadCallbacks.push(cb);
 }
@@ -61,5 +63,5 @@ export async function initMonacoIfNeeded(useNpmMonaco?: Monaco) {
 
 // useful reexports
 export type ThemeAddProp = string | [string, editor.IStandaloneThemeData];
-export {Monaco as MonacoType} from "@monaco-editor/loader";
-export {editor as mEditor} from "monaco-editor";
+export type {Monaco as MonacoType} from "@monaco-editor/loader";
+export type {editor as mEditor} from "monaco-editor";
