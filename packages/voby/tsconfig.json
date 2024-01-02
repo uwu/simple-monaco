@@ -5,6 +5,8 @@
 		"module": "ESNext",
 		"moduleResolution": "node",
 		"outDir": "dist",
-		"declaration": true
+		"declaration": true,
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true
 	}
 }

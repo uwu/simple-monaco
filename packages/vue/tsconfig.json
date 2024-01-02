@@ -6,6 +6,8 @@
 		"moduleResolution": "node",
 		"jsx": "preserve",
 		"outDir": "dist",
-		"declaration": true
+		"declaration": true,
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true
 	}
 }

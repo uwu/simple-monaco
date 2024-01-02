@@ -4,6 +4,7 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "node",
+		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"outDir": "dist",
 		"jsx": "react",
