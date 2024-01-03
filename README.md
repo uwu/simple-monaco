@@ -12,7 +12,7 @@ Scroll down for generic docs, all props are reactive, comes with typescript defs
 | vue    | [packages/vue](https://github.com/uwu/simple-monaco/tree/master/packages/vue)       | [@uwu/monaco-vue](https://npm.im/@uwu/monaco-vue)       |
 | svelte | [packages/svelte](https://github.com/uwu/simple-monaco/tree/master/packages/svelte) | [@uwu/monaco-svelte](https://npm.im/@uwu/monaco-svelte) |
 | solid  | [packages/solid](https://github.com/uwu/simple-monaco/tree/master/packages/solid)   | [@uwu/monaco-solid](https://npm.im/@uwu/monaco-solid)   |
-| voby   | [packages/solid](https://github.com/uwu/simple-monaco/tree/master/packages/voby)    | [@uwu/monaco-solid](https://npm.im/@uwu/monaco-voby)    |
+| voby   | [packages/voby](https://github.com/uwu/simple-monaco/tree/master/packages/voby)     | [@uwu/monaco-voby](https://npm.im/@uwu/monaco-voby)     |
 
 ## Important notes
 
@@ -22,6 +22,9 @@ You can use monaco from an npm package by passing it as `noCDN`.
 This will only do anything on the first render of any `<Monaco>`, and will apply to all later uses of the component.
 
 If you do not do this, monaco will just be loaded from jsDelivr.
+
+To learn how the loading process works more in depth, please check [the docs for
+`@uwu/simple-monaco-core`](https://github.com/uwu/simple-monaco/tree/master/packages/simple-monaco-core).
 
 ## API
 
@@ -58,11 +61,12 @@ The programming language to use. Influences highlighting, completion, etc.
 
 ### theme
 The colour theme to use to highlight code.
-As mentioned before, a theme from [here](https://github.com/brijeshb42/monaco-themes/tree/master/themes) by name
+As mentioned before, a theme from [here](https://github.com/brijeshb42/monaco-themes/tree/master/themes) by name, a theme object and name,
+or url to a theme.
 
-| type     | notes |
-|----------|-------|
-| `string` |       |
+| type                                       | notes |
+|--------------------------------------------|-------|
+| `string \| [string, IStandaloneThemeData]` |       |
 
 ### readonly
 When set, the user cannot edit the contents of the editor. Setting value works fine.
@@ -91,3 +95,10 @@ Other configuration options to pass to the monaco editor (eg autolayout)
 | type                                   | notes          |
 |----------------------------------------|----------------|
 | `IStandaloneEditorConstructionOptions` | defaults to {} |
+
+### noCDN
+Pass an instance of the monaco library instead of loading it from jsDelivr.
+
+| type     | notes |
+|----------|-------|
+| `Monaco` |       |
