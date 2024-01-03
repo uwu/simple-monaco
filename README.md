@@ -102,3 +102,30 @@ Pass an instance of the monaco library instead of loading it from jsDelivr.
 | type     | notes |
 |----------|-------|
 | `Monaco` |       |
+
+### modelURL
+This is used to set the "URL" of the model open in the editor.
+Mostly this isnt necessary, but is sometimes necessary for things such as enabling
+JSX support in the typescript language via extension.
+This doesn't show in the UI as monaco does not have the vscode tabbar.
+
+If a string, it MUST be a valid URI. This generally means using `inmemory://model/...`.
+
+| type            | notes |
+|-----------------|-------|
+| `string \| Uri` |       |
+
+### editorRef
+An escape hatch that gives you out the editor instance used by the component.
+This is to keep this *simple* library from becoming too big as if you need this your case is likely
+not simple.
+
+With this you are god.
+
+| framework | type                                       | notes                    |
+|-----------|--------------------------------------------|--------------------------|
+| react     | `((editor) => void) \| Ref<editor>`        |                          |
+| vue       | `((editor) => void) \| Ref<editor>`        |                          |
+| svelte    | `((editor) => void) \| Writable<editor>`   | must be a svelte store   |
+| solid     | `Setter<editor>`                           |                          |
+| voby      | `((editor) => void) \| Observable<string>` | Observable<> is writable |

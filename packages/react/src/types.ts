@@ -16,6 +16,7 @@ export type CompProps = {
 	height?: string;
 	width?: string;
 	noCDN?: MonacoType;
+	modelURL?: string | MonacoType["Uri"]['prototype'];
 };
 
 export type IStandaloneCodeEditor = mEditor.IStandaloneCodeEditor;

@@ -36,6 +36,15 @@ export default class extends PureComponent<CompProps> {
 			...this.props.otherCfg,
 		});
 
+		/*if (this.props.modelURL) {
+			let uri = this.props.modelURL;
+			if (typeof uri === "string") {
+				uri = monaco.Uri.parse(uri);
+			}
+
+
+		}*/
+
 		this.ed.onDidChangeModelContent(() => this.props.valOut?.(this.ed.getValue()));
 	}
 
