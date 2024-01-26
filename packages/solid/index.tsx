@@ -2,9 +2,10 @@ import { Component, createEffect, onCleanup, Setter } from "solid-js";
 import {
 	addThemeIfNeeded,
 	initMonacoIfNeeded,
-	MonacoType, OtherCfg,
+	MonacoType,
+	OtherCfg,
 	ThemeAddProp,
-	WrappedEditor
+	WrappedEditor,
 } from "@uwu/simple-monaco-core";
 
 type MonacoCompType = Component<{
@@ -19,7 +20,7 @@ type MonacoCompType = Component<{
 	noCDN?: MonacoType;
 	filename?: string;
 	editorRef?: Setter<WrappedEditor>;
-}>
+}>;
 
 export default ((props) => {
 	let dispose: () => void;
@@ -32,11 +33,19 @@ export default ((props) => {
 
 		if (cancelInit) return;
 
-		const ed = new WrappedEditor(elem, props.lang, props.value, props.filename, props.readonly, props.theme, props.otherCfg);
+		const ed = new WrappedEditor(
+			elem,
+			props.lang,
+			props.value,
+			props.filename,
+			props.readonly,
+			props.theme,
+			props.otherCfg,
+		);
 
 		dispose = () => ed.editor.dispose();
 
-		ed.onChange(v => props.valOut?.(v));
+		ed.onChange((v) => props.valOut?.(v));
 
 		createEffect(() => ed.setReadOnly(props.readonly));
 		createEffect(() => ed.setValue(props.value));

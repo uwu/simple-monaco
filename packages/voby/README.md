@@ -22,6 +22,6 @@ export default () => {
 		<pre>
 			<code>${val}</code>
 		</pre>
-	`
+	`;
 };
 ```

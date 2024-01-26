@@ -106,9 +106,6 @@ importers:
       svelte:
         specifier: ^3.48.0
         version: 3.49.0
-      typescript:
-        specifier: ^4.7.4
-        version: 4.7.4
 
   packages/svelte-test:
     devDependencies:

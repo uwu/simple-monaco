@@ -1,8 +1,10 @@
 import {
 	addThemeIfNeeded,
 	initMonacoIfNeeded,
-	 MonacoType, OtherCfg,
-	ThemeAddProp, WrappedEditor
+	MonacoType,
+	OtherCfg,
+	ThemeAddProp,
+	WrappedEditor,
 } from "@uwu/simple-monaco-core";
 import { h, ObservableLike, ObservableReadonlyLike, useCleanup, useEffect } from "voby";
 
@@ -16,13 +18,12 @@ type MonacoCompType = (p: {
 	width?: ObservableReadonlyLike<string>;
 	noCDN?: MonacoType;
 	filename?: ObservableReadonlyLike<string>;
-	editorRef?: ((w: WrappedEditor) => void);
-}) => (() => HTMLDivElement);
+	editorRef?: (w: WrappedEditor) => void;
+}) => () => HTMLDivElement;
 
 export default ((props) => {
-
 	const div = h("div", {
-		style: () => ({ width: props.width ?? "30rem", height: props.height ?? "10rem" })
+		style: () => ({ width: props.width ?? "30rem", height: props.height ?? "10rem" }),
 	})() as HTMLDivElement;
 
 	let dispose: () => void;
@@ -38,7 +39,15 @@ export default ((props) => {
 		await addThemeIfNeeded(props.theme?.());
 		if (cancelInit) return;
 
-		const ed = new WrappedEditor(div, props.lang?.(), props.value?.(), props.filename?.(), props.readonly?.(), props.theme?.(), props.otherCfg?.());
+		const ed = new WrappedEditor(
+			div,
+			props.lang?.(),
+			props.value?.(),
+			props.filename?.(),
+			props.readonly?.(),
+			props.theme?.(),
+			props.otherCfg?.(),
+		);
 
 		dispose = () => ed.editor.dispose();
 

@@ -2,8 +2,10 @@
 import {
 	addThemeIfNeeded,
 	initMonacoIfNeeded,
-	monaco, MonacoType, OtherCfg,
-	ThemeAddProp, WrappedEditor
+	MonacoType,
+	OtherCfg,
+	ThemeAddProp,
+	WrappedEditor,
 } from "@uwu/simple-monaco-core";
 import { onUnmounted, watchEffect } from "vue";
 
@@ -36,7 +38,15 @@ const refCb = async (elem: HTMLDivElement) => {
 	await addThemeIfNeeded(props.theme);
 	if (cancelInit) return;
 
-	const ed = new WrappedEditor(elem, props.lang, props.modelValue, props.filename, props.readonly, props.theme, props.otherCfg);
+	const ed = new WrappedEditor(
+		elem,
+		props.lang,
+		props.modelValue,
+		props.filename,
+		props.readonly,
+		props.theme,
+		props.otherCfg,
+	);
 
 	dispose = () => ed.editor.dispose();
 

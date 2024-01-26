@@ -5,7 +5,7 @@ import {
 	MonacoType,
 	OtherCfg,
 	ThemeAddProp,
-	WrappedEditor
+	WrappedEditor,
 } from "@uwu/simple-monaco-core";
 
 // every part of this mess is necessary
@@ -38,11 +38,9 @@ export default class extends PureComponent<Props> {
 
 	updateRefOut() {
 		if (!this.props.editorRef) return;
-		if (typeof this.props.editorRef === "function")
-			this.props.editorRef(this.ed);
-		else
-			// @ts-expect-error I've read the React source, .current need not be read only, shush TS.
-			this.props.editorRef.current = this.ed;
+		if (typeof this.props.editorRef === "function") this.props.editorRef(this.ed);
+		// @ts-expect-error I've read the React source, .current need not be read only, shush TS.
+		else this.props.editorRef.current = this.ed;
 	}
 
 	async initMonaco() {
@@ -52,7 +50,15 @@ export default class extends PureComponent<Props> {
 
 		this.initState = 2;
 
-		this.ed = new WrappedEditor(this.ref.current, this.props.lang, this.props.value, this.props.filename, this.props.readonly, this.props.theme, this.props.otherCfg);
+		this.ed = new WrappedEditor(
+			this.ref.current,
+			this.props.lang,
+			this.props.value,
+			this.props.filename,
+			this.props.readonly,
+			this.props.theme,
+			this.props.otherCfg,
+		);
 
 		this.ed.onChange((v: string) => this.props.valOut?.(v));
 
@@ -79,22 +85,17 @@ export default class extends PureComponent<Props> {
 	componentDidUpdate(prevProps: Readonly<Props>) {
 		if (this.initState !== 2) return;
 
-		if (this.props.readonly !== prevProps.readonly)
-			this.ed.setReadOnly(this.props.readonly);
+		if (this.props.readonly !== prevProps.readonly) this.ed.setReadOnly(this.props.readonly);
 
 		this.ed.setValue(this.props.value);
 
-		if (this.props.theme !== prevProps.theme)
-			this.ed.setTheme(this.props.theme);
+		if (this.props.theme !== prevProps.theme) this.ed.setTheme(this.props.theme);
 
-		if (this.props.lang !== prevProps.lang)
-			this.ed.setLanguage(this.props.lang);
+		if (this.props.lang !== prevProps.lang) this.ed.setLanguage(this.props.lang);
 
-		if (this.props.otherCfg !== prevProps.otherCfg)
-			this.ed.setOtherCfg(this.props.otherCfg);
+		if (this.props.otherCfg !== prevProps.otherCfg) this.ed.setOtherCfg(this.props.otherCfg);
 
-		if (this.props.editorRef !== prevProps.editorRef)
-			this.updateRefOut();
+		if (this.props.editorRef !== prevProps.editorRef) this.updateRefOut();
 	}
 
 	render() {
