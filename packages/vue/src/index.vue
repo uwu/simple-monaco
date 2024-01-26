@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { CfgOpts } from "./types";
 import {
 	addThemeIfNeeded,
 	initMonacoIfNeeded,
-	monaco, MonacoType,
-	ThemeAddProp
+	monaco, MonacoType, OtherCfg,
+	ThemeAddProp, WrappedEditor
 } from "@uwu/simple-monaco-core";
 import { onUnmounted, watchEffect } from "vue";
 
@@ -13,25 +12,23 @@ const props = defineProps<{
 	modelValue: string;
 	readonly?: boolean;
 	theme?: ThemeAddProp;
-	otherCfg?: CfgOpts;
+	otherCfg?: OtherCfg;
 	height?: string;
 	width?: string;
 	noCDN?: MonacoType;
+	filename: string;
 }>();
 const emit = defineEmits<{
 	(event: "update:modelValue", value: string): void;
+	(event: "editorRef", ed: WrappedEditor): void;
 }>();
 
 let dispose: () => void;
 let cancelInit = false;
 
 let firstRun = true;
-
-const themeName = () => Array.isArray(props.theme) ? props.theme[0] : props.theme;
-
 const refCb = async (elem: HTMLDivElement) => {
-	// vue what in the name of the good lord is wrong with you
-	// fucking bullshit smh aw fuck i cant believe youve done this
+	// vue why does this run more than once??? oh well.
 	if (!firstRun) return;
 	firstRun = false;
 
@@ -39,33 +36,19 @@ const refCb = async (elem: HTMLDivElement) => {
 	await addThemeIfNeeded(props.theme);
 	if (cancelInit) return;
 
-	const ed = monaco.editor.create(elem, {
-		language: props.lang,
-		value: props.modelValue,
-		readOnly: props.readonly ?? false,
-		theme: themeName(),
-		...props.otherCfg,
-	});
+	const ed = new WrappedEditor(elem, props.lang, props.modelValue, props.filename, props.readonly, props.theme, props.otherCfg);
 
-	dispose = () => ed.dispose();
+	dispose = () => ed.editor.dispose();
 
-	ed.onDidChangeModelContent(() => emit("update:modelValue", ed.getValue()));
-	watchEffect(() => ed.updateOptions({ readOnly: props.readonly }));
-	watchEffect(() => props.modelValue !== ed.getValue() && ed.setValue(props.modelValue));
+	ed.onChange((v) => emit("update:modelValue", v));
+	watchEffect(() => ed.setReadOnly(props.readonly));
+	watchEffect(() => ed.setValue(props.modelValue));
+	watchEffect(() => ed.setTheme(props.theme));
+	watchEffect(() => ed.setLanguage(props.lang));
+	watchEffect(() => ed.setFilename(props.filename));
+	watchEffect(() => ed.setOtherCfg(props.otherCfg));
 
-	watchEffect(async () => {
-		await addThemeIfNeeded(props.theme);
-		ed.updateOptions({ theme: themeName() });
-	});
-
-	watchEffect(() => {
-		const model = ed.getModel();
-		if (!model) return;
-		monaco.editor.setModelLanguage(model, props.lang);
-		ed.setModel(model);
-	});
-
-	watchEffect(() => props.otherCfg && ed.updateOptions(props.otherCfg));
+	emit("editorRef", ed);
 };
 
 onUnmounted(() => dispose?.());

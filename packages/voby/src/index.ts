@@ -1,12 +1,25 @@
-import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "@uwu/simple-monaco-core";
-import type { MonacoCompType } from "./types.js";
-import { $, h, html, useCleanup, useEffect } from "voby";
+import {
+	addThemeIfNeeded,
+	initMonacoIfNeeded,
+	monaco, MonacoType, OtherCfg,
+	ThemeAddProp, WrappedEditor
+} from "@uwu/simple-monaco-core";
+import { $, h, html, ObservableLike, ObservableReadonlyLike, useCleanup, useEffect } from "voby";
+
+type MonacoCompType = (p: {
+	lang: ObservableReadonlyLike<string>;
+	value: ObservableLike<string>;
+	readonly?: ObservableReadonlyLike<boolean>;
+	theme?: ObservableReadonlyLike<ThemeAddProp>;
+	otherCfg?: ObservableReadonlyLike<OtherCfg>;
+	height?: ObservableReadonlyLike<string>;
+	width?: ObservableReadonlyLike<string>;
+	noCDN?: MonacoType;
+	filename?: ObservableReadonlyLike<string>;
+	editorRef?: ((w: WrappedEditor) => void);
+}) => ReturnType<typeof html>;
 
 export default ((props) => {
-	const themeName = () => {
-		const t = props.theme?.();
-		return t && (Array.isArray(t) ? t[0] : t);
-	}
 
 	const div = (
 		html`<div
@@ -27,43 +40,20 @@ export default ((props) => {
 		await addThemeIfNeeded(props.theme?.());
 		if (cancelInit) return;
 
-		const ed = monaco.editor.create(div, {
-			language: props.lang?.(),
-			value: props.value?.() ?? "",
-			readOnly: props.readonly?.() ?? false,
-			theme: themeName(),
-			...props.otherCfg?.(),
-		});
+		const ed = new WrappedEditor(div, props.lang?.(), props.value?.(), props.filename?.(), props.readonly?.(), props.theme?.(), props.otherCfg?.());
 
-		dispose = () => ed.dispose();
+		dispose = () => ed.editor.dispose();
 
-		ed.onDidChangeModelContent(() => {
-			props.value?.(ed.getValue());
-		});
+		ed.onChange((v) => props.value?.(v));
 
-		useEffect(() => {
-			ed.updateOptions({ readOnly: props.readonly?.() });
-		});
+		useEffect(() => ed.setReadOnly(props.readonly?.()));
+		useEffect(() => ed.setValue(props.value?.()));
+		useEffect(() => ed.setTheme(props.theme?.()));
+		useEffect(() => ed.setLanguage(props.lang?.()));
+		useEffect(() => ed.setFilename(props.filename?.()));
+		useEffect(() => ed.setOtherCfg(props.otherCfg?.()));
 
-		useEffect(() => {
-			if ((props.value?.() ?? "") !== ed.getValue()) ed.setValue(props.value?.() ?? "");
-		});
-
-		useEffect(() => {
-			addThemeIfNeeded(props.theme?.()).then(() => ed.updateOptions({ theme: themeName() }));
-		});
-
-		useEffect(() => {
-			const model = ed.getModel();
-			const l = props.lang?.();
-			if (!model) return;
-			monaco.editor.setModelLanguage(model, l);
-			ed.setModel(model);
-		});
-
-		useEffect(() => {
-			if (props.otherCfg?.()) ed.updateOptions(props.otherCfg());
-		});
+		props.editorRef?.(ed);
 	})();
 
 	return () => div;

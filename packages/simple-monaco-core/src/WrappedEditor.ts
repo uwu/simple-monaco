@@ -11,10 +11,10 @@ function getURI(filename?: string) {
 export default class WrappedEditor {
 	editor: editor.IStandaloneCodeEditor;
 	// careful: theme must be manually prepared before adding here.
-	constructor(elem: HTMLElement, language: undefined | string, value: undefined | string, filename: string | undefined, readOnly: boolean | undefined, theme: ThemeAddProp | undefined, otherCfg: undefined | editor.IStandaloneEditorConstructionOptions) {
+	constructor(elem: HTMLElement, language: undefined | string, value: undefined | string, filename: string | undefined, readonly: boolean | undefined, theme: ThemeAddProp | undefined, otherCfg: undefined | editor.IStandaloneEditorConstructionOptions) {
 		this.editor = monaco.editor.create(elem, {
 			model: monaco.editor.createModel(value ?? "", language, getURI(filename)),
-			readOnly,
+			readOnly: readonly ?? false,
 			theme: nameOfTheme(theme),
 			...otherCfg
 		});
@@ -50,7 +50,8 @@ export default class WrappedEditor {
 		addThemeIfNeeded(theme).then(() => this.editor.updateOptions({theme: nameOfTheme(theme)}));
 	}
 
-	setOtherCfg(otherCfg: OtherCfg) {
+	setOtherCfg(otherCfg?: OtherCfg) {
+		if (!otherCfg) return;
 		this.editor.updateOptions(otherCfg);
 	}
 }

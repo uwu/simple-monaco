@@ -1,8 +1,12 @@
 <script lang="ts">
 	import {onDestroy, onMount} from "svelte";
 	import {Readable, Writable} from "svelte/store";
-	import type {CfgOpts, IStandaloneCodeEditor} from "./types";
-	import {addThemeIfNeeded, initMonacoIfNeeded, monaco} from "@uwu/simple-monaco-core";
+	import {
+		addThemeIfNeeded,
+		initMonacoIfNeeded,
+		OtherCfg,
+		WrappedEditor
+	} from "@uwu/simple-monaco-core";
 	import type {MonacoType, ThemeAddProp} from "@uwu/simple-monaco-core";
 
 	export let
@@ -10,14 +14,14 @@
 		value: Readable<string> | Writable<string>,
 		readonly: boolean = false,
 		theme: ThemeAddProp = undefined,
-		otherCfg: CfgOpts = {},
+		otherCfg: OtherCfg = {},
 		height: string = "10rem",
 		width: string = "30rem",
-    noCDN: MonacoType = undefined;
+    	noCDN: MonacoType = undefined,
+		filename: string,
+		editorRef: ((w: WrappedEditor) => void) | Writable<WrappedEditor>;
 
-	$: themeName = Array.isArray(theme) ? theme[0] : theme;
-
-	let ed: IStandaloneCodeEditor;
+	let ed: WrappedEditor;
 
 	const isWritable = <T>(s: Readable<T>): s is Writable<T> => s["set"];
 
@@ -29,38 +33,26 @@
 
 		if (cancelInit) return;
 
-		ed = monaco.editor.create(elem, {
-			language: lang,
-			value: $value,
-			readOnly: readonly,
-			theme: themeName,
-			...otherCfg
-		});
+		ed = new WrappedEditor(elem, lang, $value, filename, readonly, theme, otherCfg);
 
-		ed.onDidChangeModelContent(() => isWritable(value) && ($value = ed.getValue()));
+		ed.onChange((v) => isWritable(value) && ($value = v));
 	});
 
-	$: if ($value !== ed?.getValue()) ed?.setValue($value);
-	$: ed?.updateOptions({readOnly: readonly});
-	$: addThemeIfNeeded(theme).then(() => ed?.updateOptions({theme: themeName}));
-
-	$: {
-		const model = ed?.getModel();
-		if (model) {
-			monaco.editor.setModelLanguage(model, lang);
-			ed.setModel(model);
+	$: if (ed) {
+			if (typeof editorRef === "function") editorRef(ed);
+			else editorRef.set(ed); // svelte is not smart enough to let me use $ syntax here.
 		}
-	}
 
-  let first = true;
-  $: if (first && otherCfg)
-      first = false;
-    else
-      ed?.updateOptions(otherCfg);
+	$: ed?.setValue($value);
+	$: ed?.setReadOnly(readonly);
+	$: ed?.setTheme(theme);
+	$: ed?.setLanguage(lang);
+	$: ed?.setFilename(filename);
+  $: ed?.setOtherCfg(otherCfg);
 
 	onDestroy(() => {
 		cancelInit = true;
-		ed.dispose();
+		ed?.editor.dispose();
 	});
 </script>
 

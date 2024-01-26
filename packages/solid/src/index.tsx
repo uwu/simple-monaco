@@ -1,12 +1,29 @@
-import { createEffect, onCleanup } from "solid-js";
-import { addThemeIfNeeded, initMonacoIfNeeded, monaco } from "@uwu/simple-monaco-core";
-import type { MonacoCompType } from "./types";
+import { Component, createEffect, onCleanup, Setter } from "solid-js";
+import {
+	addThemeIfNeeded,
+	initMonacoIfNeeded,
+	MonacoType, OtherCfg,
+	ThemeAddProp,
+	WrappedEditor
+} from "@uwu/simple-monaco-core";
+
+type MonacoCompType = Component<{
+	lang: string;
+	value: string;
+	valOut?: Setter<string>;
+	readonly?: boolean;
+	theme?: ThemeAddProp;
+	otherCfg?: OtherCfg;
+	height?: string;
+	width?: string;
+	noCDN?: MonacoType;
+	filename?: string;
+	editorRef?: Setter<WrappedEditor>;
+}>
 
 export default ((props) => {
 	let dispose: () => void;
 	let cancelInit = false;
-
-	const themeName = () => Array.isArray(props.theme) ? props.theme[0] : props.theme;
 
 	const refCb = async (elem: HTMLDivElement) => {
 		await initMonacoIfNeeded(props.noCDN);
@@ -15,39 +32,20 @@ export default ((props) => {
 
 		if (cancelInit) return;
 
-		const ed = monaco.editor.create(elem, {
-			language: props.lang,
-			value: props.value,
-			readOnly: props.readonly ?? false,
-			theme: themeName(),
-			...props.otherCfg,
-		});
+		const ed = new WrappedEditor(elem, props.lang, props.value, props.filename, props.readonly, props.theme, props.otherCfg);
 
-		dispose = () => ed.dispose();
+		dispose = () => ed.editor.dispose();
 
-		ed.onDidChangeModelContent(() => {
-			props.valOut?.(ed.getValue());
-		});
+		ed.onChange(v => props.valOut?.(v));
 
-		createEffect(() => ed.updateOptions({ readOnly: props.readonly }));
+		createEffect(() => ed.setReadOnly(props.readonly));
+		createEffect(() => ed.setValue(props.value));
+		createEffect(() => ed.setTheme(props.theme));
+		createEffect(() => ed.setLanguage(props.lang));
+		createEffect(() => ed.setFilename(props.filename));
+		createEffect(() => ed.setOtherCfg(props.otherCfg));
 
-		createEffect(() => {
-			if (props.value !== ed.getValue()) ed.setValue(props.value);
-		});
-
-		createEffect(async () => {
-			await addThemeIfNeeded(props.theme);
-			ed.updateOptions({ theme: themeName() });
-		});
-
-		createEffect(() => {
-			const model = ed.getModel();
-			if (!model) return;
-			monaco.editor.setModelLanguage(model, props.lang);
-			ed.setModel(model);
-		});
-
-		createEffect(() => props.otherCfg && ed.updateOptions(props.otherCfg));
+		createEffect(() => props.editorRef?.(ed));
 	};
 
 	onCleanup(() => {

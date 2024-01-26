@@ -90,7 +90,7 @@ export default class extends PureComponent<Props> {
 		if (this.props.lang !== prevProps.lang)
 			this.ed.setLanguage(this.props.lang);
 
-		if (this.props.otherCfg !== prevProps.otherCfg && this.props.otherCfg)
+		if (this.props.otherCfg !== prevProps.otherCfg)
 			this.ed.setOtherCfg(this.props.otherCfg);
 
 		if (this.props.editorRef !== prevProps.editorRef)

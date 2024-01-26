@@ -123,10 +123,10 @@ not simple.
 
 With this you are god.
 
-| framework | type                                                               | notes                    |
-|-----------|--------------------------------------------------------------------|--------------------------|
-| react     | `((core.WrappedEditor) => void) \| Ref<core.WrappedEditor>`        |                          |
-| vue       | `((core.WrappedEditor) => void) \| Ref<core.WrappedEditor>`        |                          |
-| svelte    | `((core.WrappedEditor) => void) \| Writable<core.WrappedEditor>`   | must be a svelte store   |
-| solid     | `((core.WrappedEditor) => void)`                                   |                          |
-| voby      | `((core.WrappedEditor) => void) \| Observable<core.WrappedEditor>` | Observable<> is writable |
+| framework | type                                                             | notes                                                           |
+|-----------|------------------------------------------------------------------|-----------------------------------------------------------------|
+| react     | `((core.WrappedEditor) => void) \| Ref<core.WrappedEditor>`      |                                                                 |
+| vue       | N/A                                                              | use the `editorRef` event.                                      |
+| svelte    | `((core.WrappedEditor) => void) \| Writable<core.WrappedEditor>` | must be a svelte store                                          |
+| solid     | `((core.WrappedEditor) => void)`                                 |                                                                 |
+| voby      | `((core.WrappedEditor) => void)`                                 | ObservableLike<WrappedEditor> is compatible with this signature |
