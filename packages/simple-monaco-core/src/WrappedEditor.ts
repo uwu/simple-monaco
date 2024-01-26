@@ -56,7 +56,7 @@ export default class WrappedEditor {
 	}
 
 	setTheme(theme: ThemeAddProp) {
-		addThemeIfNeeded(theme).then(() => this.editor.updateOptions({ theme: nameOfTheme(theme) }));
+		addThemeIfNeeded(theme).then(() => monaco.editor.setTheme(nameOfTheme(theme)));
 	}
 
 	setOtherCfg(otherCfg?: OtherCfg) {

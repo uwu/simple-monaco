@@ -31,3 +31,34 @@ export default () => {
 	);
 };
 ```
+
+There is also a hook version:
+
+```tsx
+import { useMonaco } from "@uwu/monaco-react";
+import * as monaco from "monaco-editor";
+
+export default () => {
+	// [element to put onto the dom, current value & setter, monaco editor instance]
+	// instance is initially undefined, and using the hook will cause a rerender
+	// when it becomes available.
+	const [element, val, setVal, _ed] = useMonaco("", {
+		lang: "javascript",
+		theme: "Monokai",
+		readonly: false,
+		height: "30rem",
+		width: "20rem",
+		otherCfg: {},
+		noCDN: monaco,
+	});
+
+	return (
+		<>
+			{element}
+			<pre>
+				<code>{val}</code>
+			</pre>
+		</>
+	);
+};
+```

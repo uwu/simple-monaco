@@ -69,6 +69,8 @@ The colour theme to use to highlight code.
 As mentioned before, a theme from [here](https://github.com/brijeshb42/monaco-themes/tree/master/themes) by name, a theme object and name,
 or url to a theme.
 
+All instances must share the same theme for weird Monaco reasons.
+
 | type                                       | notes |
 | ------------------------------------------ | ----- |
 | `string \| [string, IStandaloneThemeData]` |       |

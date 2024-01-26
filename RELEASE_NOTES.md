@@ -1,3 +1,9 @@
+### 1.4.1 (React only)
+
+-  Adds React Hooks API variant
+-  Update core to reflect that themes are actually global
+   (this has no functional effect and is just a style choice)
+
 ### 1.4.0
 
 -  Moved as much logic as possible to @uwu/simple-monaco-core

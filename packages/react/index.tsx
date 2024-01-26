@@ -1,4 +1,4 @@
-import { createRef, PureComponent, RefObject } from "react";
+import { createRef, PureComponent, RefObject, useState } from "react";
 import {
 	addThemeIfNeeded,
 	initMonacoIfNeeded,
@@ -27,7 +27,7 @@ type Props = {
 	editorRef?: RefObject<WrappedEditor> | ((e: WrappedEditor) => void);
 };
 
-export default class extends PureComponent<Props> {
+export default class SimpleMonaco extends PureComponent<Props> {
 	ref = createRef<HTMLDivElement>();
 	ed: WrappedEditor;
 	private elems: Element[];
@@ -109,4 +109,19 @@ export default class extends PureComponent<Props> {
 			/>
 		);
 	}
+}
+
+type HookProps = Omit<Props, "value" | "valOut" | "editorRef">;
+type HookRet = [JSX.Element, string, (s: string) => void, WrappedEditor | undefined];
+
+export function useMonaco(initVal: string, props: HookProps): HookRet {
+	const [val, setVal] = useState(initVal);
+	const [escHatch, setEscHatch] = useState<WrappedEditor>();
+
+	return [
+		<SimpleMonaco {...props} value={val} valOut={setVal} editorRef={setEscHatch} />,
+		val,
+		setVal,
+		escHatch,
+	];
 }

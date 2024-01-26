@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { StrictMode, useState } from "react";
 import ReactDOM from "react-dom/client";
-import Monaco from "../../react/src";
+import Monaco, { useMonaco } from "../../react";
 
 function App() {
 	const [val, setVal] = useState("");
@@ -35,12 +35,46 @@ function App() {
 			<input id="ro" type="checkbox" onChange={(e) => setRo(e.target.checked)} />
 			<label htmlFor="ro">readonly</label>
 			<input type="text" onChange={(e) => setFontSize(parseFloat(e.target.value))} />
+
+			<HookBasedTest />
+		</>
+	);
+}
+
+function HookBasedTest() {
+	const [lang, setLang] = useState("javascript");
+	const [theme, setTheme] = useState("Monokai");
+	const [ro, setRo] = useState(false);
+
+	const [fontSize, setFontSize] = useState(16);
+
+	const [elem, val, setVal, edInst] = useMonaco("", {
+		lang,
+		theme,
+		readonly: ro,
+		otherCfg: { fontSize },
+	});
+
+	return (
+		<>
+			<h2>Hooks test</h2>
+			Editor instance available: {!!edInst + ""}
+			{elem}
+			<pre>
+				<code>{val}</code>
+			</pre>
+			<button onClick={() => setVal("")}>clear</button>
+			<input type="text" onChange={(e) => setLang(e.target.value)} />
+			<input type="text" onChange={(e) => setTheme(e.target.value)} />
+			<input id="ro" type="checkbox" onChange={(e) => setRo(e.target.checked)} />
+			<label htmlFor="ro">readonly</label>
+			<input type="text" onChange={(e) => setFontSize(parseFloat(e.target.value))} />
 		</>
 	);
 }
 
 ReactDOM.createRoot(document.querySelector("#root") as HTMLElement).render(
-	<React.StrictMode>
+	<StrictMode>
 		<App />
-	</React.StrictMode>,
+	</StrictMode>,
 );
