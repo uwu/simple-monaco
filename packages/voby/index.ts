@@ -1,10 +1,10 @@
 import {
 	addThemeIfNeeded,
 	initMonacoIfNeeded,
-	monaco, MonacoType, OtherCfg,
+	 MonacoType, OtherCfg,
 	ThemeAddProp, WrappedEditor
 } from "@uwu/simple-monaco-core";
-import { $, h, html, ObservableLike, ObservableReadonlyLike, useCleanup, useEffect } from "voby";
+import { h, ObservableLike, ObservableReadonlyLike, useCleanup, useEffect } from "voby";
 
 type MonacoCompType = (p: {
 	lang: ObservableReadonlyLike<string>;
@@ -17,15 +17,13 @@ type MonacoCompType = (p: {
 	noCDN?: MonacoType;
 	filename?: ObservableReadonlyLike<string>;
 	editorRef?: ((w: WrappedEditor) => void);
-}) => ReturnType<typeof html>;
+}) => (() => HTMLDivElement);
 
 export default ((props) => {
 
-	const div = (
-		html`<div
-			style=${() => ({ width: props.width ?? "30rem", height: props.height ?? "10rem" })}
-		/>` as any
-	)();
+	const div = h("div", {
+		style: () => ({ width: props.width ?? "30rem", height: props.height ?? "10rem" })
+	})() as HTMLDivElement;
 
 	let dispose: () => void;
 	let cancelInit = false;

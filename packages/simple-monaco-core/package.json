@@ -1,7 +1,7 @@
 {
 	"name": "@uwu/simple-monaco-core",
-	"version": "1.3.0",
-	"description": "Monaco easy components core (loader and themer)",
+	"version": "1.4.0",
+	"description": "Monaco easy components core (loader, themer, other logic)",
 	"main": "dist/index.js",
 	"module": "dist/index.js",
 	"types": "dist/index.d.ts",

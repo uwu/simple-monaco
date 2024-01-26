@@ -4,10 +4,8 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "node",
-		"jsx": "preserve",
-		"outDir": "dist",
-		"declaration": true,
 		"resolveJsonModule": true,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"noEmit": true
 	}
 }
