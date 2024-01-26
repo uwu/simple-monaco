@@ -92,9 +92,9 @@ Sets the height of the monaco editor.
 ### otherCfg
 Other configuration options to pass to the monaco editor (eg autolayout)
 
-| type                                   | notes          |
-|----------------------------------------|----------------|
-| `IStandaloneEditorConstructionOptions` | defaults to {} |
+| type            | notes          |
+|-----------------|----------------|
+| `core.OtherCfg` | defaults to {} |
 
 ### noCDN
 Pass an instance of the monaco library instead of loading it from jsDelivr.
@@ -103,17 +103,18 @@ Pass an instance of the monaco library instead of loading it from jsDelivr.
 |----------|-------|
 | `Monaco` |       |
 
-### modelURL
+### filename
 This is used to set the "URL" of the model open in the editor.
 Mostly this isnt necessary, but is sometimes necessary for things such as enabling
 JSX support in the typescript language via extension.
 This doesn't show in the UI as monaco does not have the vscode tabbar.
 
-If a string, it MUST be a valid URI. This generally means using `inmemory://model/...`.
+This will be constructed into a URL for you of the form `inmemory://sm-model/...`.
+(The default URLs used by monaco are `inmemory://model/1`, then 2, 3, etc).
 
-| type            | notes |
-|-----------------|-------|
-| `string \| Uri` |       |
+| type     | notes |
+|----------|-------|
+| `string` |       |
 
 ### editorRef
 An escape hatch that gives you out the editor instance used by the component.
@@ -122,10 +123,10 @@ not simple.
 
 With this you are god.
 
-| framework | type                                       | notes                    |
-|-----------|--------------------------------------------|--------------------------|
-| react     | `((editor) => void) \| Ref<editor>`        |                          |
-| vue       | `((editor) => void) \| Ref<editor>`        |                          |
-| svelte    | `((editor) => void) \| Writable<editor>`   | must be a svelte store   |
-| solid     | `Setter<editor>`                           |                          |
-| voby      | `((editor) => void) \| Observable<string>` | Observable<> is writable |
+| framework | type                                                               | notes                    |
+|-----------|--------------------------------------------------------------------|--------------------------|
+| react     | `((core.WrappedEditor) => void) \| Ref<core.WrappedEditor>`        |                          |
+| vue       | `((core.WrappedEditor) => void) \| Ref<core.WrappedEditor>`        |                          |
+| svelte    | `((core.WrappedEditor) => void) \| Writable<core.WrappedEditor>`   | must be a svelte store   |
+| solid     | `((core.WrappedEditor) => void)`                                   |                          |
+| voby      | `((core.WrappedEditor) => void) \| Observable<core.WrappedEditor>` | Observable<> is writable |

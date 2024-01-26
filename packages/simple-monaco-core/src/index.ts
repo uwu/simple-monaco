@@ -61,7 +61,18 @@ export async function initMonacoIfNeeded(useNpmMonaco?: Monaco) {
 	await monacoLoaded;
 }
 
+export function nameOfTheme(theme: ThemeAddProp) {
+	return Array.isArray(theme) ? theme[0] : theme;
+}
+
 // useful reexports
 export type ThemeAddProp = string | [string, editor.IStandaloneThemeData];
 export type {Monaco as MonacoType} from "@monaco-editor/loader";
 export type {editor as mEditor} from "monaco-editor";
+
+export type OtherCfg = Omit<
+	editor.IStandaloneEditorConstructionOptions,
+	"language" | "value" | "readOnly" | "theme" | "model"
+>;
+
+export {default as WrappedEditor} from "./WrappedEditor.js";
